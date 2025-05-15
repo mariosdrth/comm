@@ -18,6 +18,7 @@ class Neo4jEmailGraphExporter(Neo4jGraph):
         self.label = "EmailEuCore"
 
     def export_graph(self, G: nx.Graph):
+        print(f"Exporting graph with label '{self.label}' to Neo4j...")
         with self.driver.session() as session:
 
             for node, data in G.nodes(data=True):
@@ -47,6 +48,7 @@ class Neo4jBrainGraphExporter(Neo4jGraph):
         self.label = "BrainNetwork"
 
     def export_graph(self, G: nx.Graph):
+        print(f"Exporting graph with label '{self.label}' to Neo4j...")
         with self.driver.session() as session:
 
             for node, _ in G.nodes(data=True):
@@ -81,6 +83,7 @@ class Neo4jGraphExporter(Neo4jGraph):
         return -1
 
     def export_graph(self, G: nx.Graph, original_G: nx.Graph, community_dict=None, original_nodes=None):
+        print(f"Exporting graph with label '{self.label}' to Neo4j...")
         with self.driver.session() as session:
 
             id_orig = 1
