@@ -71,4 +71,4 @@ class Leiden(Louvain):
         return new_G, hypernode_partition
 
     def run(self, print_results=True):
-        return super().run('Leiden', print_results)
+        return super().run('Leiden', print_results=print_results)

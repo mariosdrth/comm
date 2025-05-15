@@ -199,7 +199,11 @@ class Louvain:
         print("=======================================================")
         print(f"Time taken for {method}: {hours} hours, {minutes} minutes, {seconds:.4f} seconds")
         print("=======================================================")
-        return self.original_G, self.G, self.partition
+        final_partition = {}
+        for community, original_nodes_list in self.original_nodes.items():
+            for node in original_nodes_list:
+                final_partition[node] = community
+        return self.original_G, self.G, self.partition, final_partition
 
     # AI GENERATED - just used to print the communities nicely, no louvain logic here
     def print_current_communities(self, iteration):

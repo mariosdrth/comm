@@ -8,11 +8,12 @@ import time
 import math
 import evaluation
 
+print("Start time:", time.strftime("%Y-%m-%d %H:%M:%S"))
 start_time = time.time()
 
 # Load the graph structure from edge list
 email_eu_graph_initial: nx.Graph = nx.read_edgelist('datasets/email-Eu-core.txt.gz', comments='#', nodetype=int)
-email_eu_graph = email_eu_graph_initial.to_undirected()
+email_eu_graph: nx.Graph = email_eu_graph_initial.to_undirected()
 
 # Load department labels
 node_labels = {}
@@ -49,20 +50,20 @@ processor = GraphPreprocessor(
 email_eu_graph_processed = processor.process()
 
 louvain = Lvn(email_eu_graph_processed)
-louvain_original_G, louvain_G, louvain_partition = louvain.run(print_results=False)
+louvain_original_G, louvain_G, louvain_partition, louvain_final_partition = louvain.run(print_results=False)
 
 leiden = Ldn(email_eu_graph_processed)
-leiden_original_G, leiden_G, leiden_partition = leiden.run(print_results=False)
+leiden_original_G, leiden_G, leiden_partition, leiden_final_partition = leiden.run(print_results=False)
 
-evaluation.evaluate_communities_with_ground_truth(louvain_partition, node_labels, "Louvain")
-evaluation.evaluate_communities_with_ground_truth(leiden_partition, node_labels, "Leiden")
+evaluation.evaluate_communities_with_ground_truth(louvain_final_partition, node_labels, "Louvain")
+evaluation.evaluate_communities_with_ground_truth(leiden_final_partition, node_labels, "Leiden")
 
 louvain_exporter = Neo4jGraphExporter(label="LouvainNode")
-louvain_exporter.export_graph(louvain_G, louvain_original_G, community_dict=louvain_partition, original_nodes=louvain.original_nodes)
+louvain_exporter.export_graph(louvain_G, louvain_original_G, community_dict=louvain_final_partition, original_nodes=louvain.original_nodes)
 louvain_exporter.close()
 
 leiden_exporter = Neo4jGraphExporter(label="LeidenNode")
-leiden_exporter.export_graph(leiden_G, leiden_original_G, community_dict=leiden_partition, original_nodes=leiden.original_nodes)
+leiden_exporter.export_graph(leiden_G, leiden_original_G, community_dict=leiden_partition, original_nodes=leiden.original_nodes, for_louvain=False)
 leiden_exporter.close()
 
 end_time = time.time()

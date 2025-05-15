@@ -82,14 +82,17 @@ class Neo4jGraphExporter(Neo4jGraph):
                 return key
         return -1
 
-    def export_graph(self, G: nx.Graph, original_G: nx.Graph, community_dict=None, original_nodes=None):
+    def export_graph(self, G: nx.Graph, original_G: nx.Graph, community_dict: dict=None, original_nodes: dict=None, for_louvain=True):
         print(f"Exporting graph with label '{self.label}' to Neo4j...")
         with self.driver.session() as session:
 
             id_orig = 1
             for node in original_G.nodes():
                 props = {"id": f"{id_orig}_{self.label}", "name": f"Node {node}_{self.label}", "dict_id": f"{node}_{self.label}"}
-                node_community = self.find_key_by_value(self.transform_nodes_dictionary(original_nodes), node)
+                if for_louvain:
+                    node_community = community_dict.get(node, -1)
+                else:
+                    node_community = self.find_key_by_value(self.transform_nodes_dictionary(original_nodes), node)
                 label = ""
                 if node_community != -1:
                     label = f"{self.label}_original"
