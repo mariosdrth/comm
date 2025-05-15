@@ -10,7 +10,7 @@ from sklearn.preprocessing import MinMaxScaler
 # NMI = 1 → Perfect match between predicted and ground-truth communities.
 # NMI = 0 → Completely independent / unrelated community assignments.
 # NMI near 0.5 → Some overlap, but not a strong match.
-def evaluate_communities_with_ground_truth(pred_partition: dict, ground_truth: dict):
+def evaluate_communities_with_ground_truth(pred_partition: dict, ground_truth: dict, method):
     # create a sorted list of all nodes present in the ground truth dictionary
     # keep it sorted as both dicts should have the same node order
     nodes = sorted(ground_truth.keys())
@@ -30,13 +30,13 @@ def evaluate_communities_with_ground_truth(pred_partition: dict, ground_truth: d
 
     # compute NMI score between true and predicted labels
     nmi = normalized_mutual_info_score(true_labels, pred_labels)
-    print(f"Normalized Mutual Information (NMI): {nmi:.4f}")
+    print(f"Normalized Mutual Information (NMI) for {method}: {nmi:.4f}")
     return nmi
 
 # We expect low cohesiveness and high separateness for good community detection
 # If cohesiveness is high, nodes within communities are not close to each other feature-wise.
 # If separateness is low, communities overlap heavily in feature space.
-def evaluate_communities_without_ground_truth(G: nx.Graph, partition):
+def evaluate_communities_without_ground_truth(G: nx.Graph, partition, method):
     # Ensure nodes have 'feature'; if not, add degree as feature
     for node in G.nodes():
         if 'feature' not in G.nodes[node]:
@@ -93,7 +93,7 @@ def evaluate_communities_without_ground_truth(G: nx.Graph, partition):
     separateness_distances = pairwise_distances(centroids, global_centroid)
     separateness = separateness_distances.mean()
 
-    print(f"Cohesiveness: {cohesiveness:.4f}")
-    print(f"Separateness: {separateness:.4f}")
+    print(f"Cohesiveness for {method}: {cohesiveness:.4f}")
+    print(f"Separateness for {method}: {separateness:.4f}")
     
     return cohesiveness, separateness

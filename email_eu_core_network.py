@@ -6,6 +6,7 @@ from louvain import Louvain as Lvn
 from leiden import Leiden as Ldn
 import time
 import math
+import evaluation
 
 start_time = time.time()
 
@@ -52,6 +53,9 @@ louvain_original_G, louvain_G, louvain_partition = louvain.run(print_results=Fal
 
 leiden = Ldn(email_eu_graph_processed)
 leiden_original_G, leiden_G, leiden_partition = leiden.run(print_results=False)
+
+evaluation.evaluate_communities_with_ground_truth(louvain_partition, node_labels, "Louvain")
+evaluation.evaluate_communities_with_ground_truth(leiden_partition, node_labels, "Leiden")
 
 louvain_exporter = Neo4jGraphExporter(label="LouvainNode")
 louvain_exporter.export_graph(louvain_G, louvain_original_G, community_dict=louvain_partition, original_nodes=louvain.original_nodes)
