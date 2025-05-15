@@ -48,10 +48,10 @@ processor = GraphPreprocessor(
 email_eu_graph_processed = processor.process()
 
 louvain = Lvn(email_eu_graph_processed)
-louvain_original_G, louvain_G, louvain_partition = louvain.run(False)
+louvain_original_G, louvain_G, louvain_partition = louvain.run(print_results=False)
 
 leiden = Ldn(email_eu_graph_processed)
-leiden_original_G, leiden_G, leiden_partition = leiden.run(False)
+leiden_original_G, leiden_G, leiden_partition = leiden.run(print_results=False)
 
 louvain_exporter = Neo4jGraphExporter(label="LouvainNode")
 louvain_exporter.export_graph(louvain_G, louvain_original_G, community_dict=louvain_partition, original_nodes=louvain.original_nodes)
