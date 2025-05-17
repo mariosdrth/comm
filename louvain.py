@@ -5,11 +5,13 @@ class Louvain:
     def __init__(self, G: nx.Graph):
         # initialize the graph
         self.G = G
+        # keep a copy of the original graph to use it later for exporting to Neo4j
         self.original_G = G
         # create a dictionary with key/values nodes indicating the edge between them
         # initially each node is a community so the dictionary entries "point" to themselves
         self.partition = {}
         # use this dictionary to keep the list of nodes belonging to communities after iterations to print it later
+        # for "personal" use, to print the communities nicely when testing the algorithm
         self.original_nodes = {}
         for node in G.nodes():
             self.partition.update({node: node})
@@ -166,7 +168,7 @@ class Louvain:
         current_modularity = self.modularity()
         iteration = 1
 
-        # create loop to iterate over the hypernodes and try to improve modularity each time
+        # run the algorithm until there is no improvement in modularity
         while True:
             # perform phase 1
             self.best_partition()
