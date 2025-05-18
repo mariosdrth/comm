@@ -39,6 +39,9 @@ def evaluate_communities_with_ground_truth(pred_partition: dict, ground_truth: d
 def evaluate_communities_without_ground_truth(G: nx.Graph, partition, method):
     # Ensure nodes have 'feature'; if not, add degree as feature
     for node in G.nodes():
+        if node not in partition:
+            # skip nodes not in partition or assign default community
+            continue
         if 'feature' not in G.nodes[node]:
             G.nodes[node]['feature'] = np.array([G.degree(node)])
     # convert node features to a matrix

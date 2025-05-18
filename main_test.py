@@ -10,12 +10,12 @@ import time
 import sys
 import os
 
-timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
-log_dir = os.path.join('logs', timestamp)
-os.makedirs(log_dir, exist_ok=True)
-log_file_path = os.path.join(log_dir, 'output.txt')
-sys.stdout = open(log_file_path, 'w')
-sys.stderr = sys.stdout
+# timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
+# log_dir = os.path.join('logs', timestamp)
+# os.makedirs(log_dir, exist_ok=True)
+# log_file_path = os.path.join(log_dir, 'output.txt')
+# sys.stdout = open(log_file_path, 'w')
+# sys.stderr = sys.stdout
 
 def load_dataset_and_run():
     # Example usage
@@ -56,8 +56,8 @@ def load_dataset_and_run():
     # leiden_exporter.export_graph(leiden_G, leiden_original_G, community_dict=leiden_partition, original_nodes=leiden.original_nodes)
     # leiden_exporter.close()
 
-    sys.stdout.close()
-    sys.stdout = sys.__stdout__
+    # sys.stdout.close()
+    # sys.stdout = sys.__stdout__
 
 
 if __name__ == "__main__":
