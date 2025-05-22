@@ -14,12 +14,12 @@ from preprocessing import GraphPreprocessor
 import evaluation
 
 # Logging
-timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
-log_dir = os.path.join('logs', f"brain_network_external_{timestamp}")
-os.makedirs(log_dir, exist_ok=True)
-log_file_path = os.path.join(log_dir, 'output.txt')
-sys.stdout = open(log_file_path, 'w')
-sys.stderr = sys.stdout
+# timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
+# log_dir = os.path.join('logs', f"brain_network_external_{timestamp}")
+# os.makedirs(log_dir, exist_ok=True)
+# log_file_path = os.path.join(log_dir, 'output.txt')
+# sys.stdout = open(log_file_path, 'w')
+# sys.stderr = sys.stdout
 
 start_time = time.time()
 
@@ -90,7 +90,7 @@ for node, comm_id in pred_partition_dict.items():
 
 # ---------------- Evaluation ---------------- #
 evaluation.evaluate_communities_without_ground_truth(brain_graph_processed, partition_louvain, "Louvain")
-# evaluation.evaluate_communities_without_ground_truth(brain_graph_processed, pred_partition_dict, "Leiden")
+evaluation.evaluate_communities_without_ground_truth(brain_graph_processed, pred_partition_dict, "Leiden")
 
 evaluation.evaluate_cpm(brain_graph_processed, partition_louvain, gamma=0.1, method="Louvain")
 evaluation.evaluate_cpm(brain_graph_processed, pred_partition_dict, gamma=0.1, method="Leiden")
