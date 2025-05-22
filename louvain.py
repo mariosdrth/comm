@@ -235,6 +235,9 @@ class Louvain:
                 community_map[community] = []
             community_map[community].extend(self.original_nodes[node])
 
+        # Assign friendly community indices (1-based)
+        community_id_map = {comm_id: idx+1 for idx, comm_id in enumerate(sorted(community_map))}
+
         print("\nFinal Community Assignments:")
         community_index = 1
         for community, nodes in sorted(community_map.items()):
@@ -243,4 +246,6 @@ class Louvain:
 
         print("\nFinal Edge Weights:")
         for u, v, data in self.G.edges(data=True):
-            print(f"Edge ({u}, {v}): Weight {data.get('weight', 1)}")
+            friendly_u = community_id_map.get(u, u)
+            friendly_v = community_id_map.get(v, v)
+            print(f"Edge ({friendly_u}, {friendly_v}): Weight {data.get('weight', 1)}")
